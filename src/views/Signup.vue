@@ -1,17 +1,8 @@
 <template>
   <div>
-    <h1>Signup</h1>
     <v-layout row wrap>
       <v-flex xs12 sm4 offset-xs0 offset-sm4>
-        <v-alert
-            :value="true"
-            color="error"
-            icon="warning"
-            v-if="alert.state"
-            transition="fade-transition"
-            outline
-        >{{alert.text}}
-        </v-alert>
+        <h1>ユーザー登録</h1>
         <v-form v-model="valid" lazy-validation ref="form">
           <v-text-field
               v-model="email"
@@ -28,9 +19,18 @@
           <v-btn block color="primary"
                  :loading="loading"
                  :disabled="loading"
-                 @click="signUp">signup
+                 @click="signUp">登録
           </v-btn>
         </v-form>
+        <v-alert
+            :value="true"
+            color="error"
+            icon="warning"
+            v-if="alert.state"
+            transition="fade-transition"
+            outline
+        >{{alert.text}}
+        </v-alert>
       </v-flex>
     </v-layout>
   </div>
@@ -51,7 +51,7 @@
         ],
         passwordRules: [
           v => !!v || 'Password is required',
-          v => v.length <= 8 || 'Password must be less than 8 characters'
+          v => v.length >= 6 || 'Password must be less than 6 characters'
         ],
         alert: {
           state: false,
@@ -62,12 +62,15 @@
     methods: {
       signUp() {
         if (this.$refs.form.validate()) {
+          this.loading = true
           this.$firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
           .then(result => {
+            this.loading = false
             this.$router.push(`/user/${result.user.uid}`)
           })
           .catch(e => {
             this.showAlert(e.message)
+            this.loading = false
           })
         }
       },
