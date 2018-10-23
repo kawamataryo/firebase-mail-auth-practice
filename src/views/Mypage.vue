@@ -19,8 +19,6 @@
 
           <v-card-actions>
             <v-btn flat color="danger"
-                   :loading="loading"
-                   :disabled="loading"
                    block
                    @click="signOut">sign out
             </v-btn>
@@ -42,22 +40,11 @@
       }
     },
     methods: {
-      signOut: function () {
-        let self = this
-        self.loading = true
-        this.$firebase.auth().signOut().then(function () {
-          self.loading = false
-          self.$forceUpdate()
-          self.$router.push("/signin")
-        }).catch(function (e) {
+      async signOut() {
+        this.$firebase.auth().signOut().catch(function (e) {
           alert(e.message)
-          self.loading = false
         })
       }
     }
   }
 </script>
-
-<style scoped>
-
-</style>
