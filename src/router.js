@@ -11,21 +11,21 @@ let router = new Router({
     {
       path: '/',
       name: 'home',
-      component: () => import('./views/Home.vue')
+      component: () => import('./views/Signin.vue')
     },
     {
       path: '/signin',
-      name: 'Signin',
+      name: 'signin',
       component: () => import('./views/Signin.vue')
     },
     {
       path: '/signup',
-      name: 'Signup',
+      name: 'signup',
       component: () => import('./views/Signup.vue')
     },
     {
       path: '/user/:uid',
-      name: 'Mypage',
+      name: 'mypage',
       component: () => import('./views/Mypage.vue'),
       meta: {requireAuth: true}
     },
@@ -48,7 +48,7 @@ router.beforeEach((to, from, next) => {
       }
     })
   } else {
-    next() // next() を常に呼び出すようにしてください!
+    next()
   }
 })
 
